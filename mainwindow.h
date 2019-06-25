@@ -15,6 +15,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void setInternalRadius(qreal newValue);
+
 private:
     Ui::MainWindow *ui;
 };

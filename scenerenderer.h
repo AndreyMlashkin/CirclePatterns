@@ -14,6 +14,17 @@ class SceneRenderer : public QOpenGLWidget
 public:
     explicit SceneRenderer(QWidget *parent = 0);
     ~SceneRenderer();
+
+    void setSceneParams(qreal internalRadius);
+
+    void getDefaults (qreal& internalRadius);
+    void getMaxValues(qreal& internalRadius);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+
+private:
+    qreal m_internalRadius;
 };
 
 #endif // SCENERENDERER_H
