@@ -14,8 +14,19 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         qreal maximum = ui->internalRadiusBox->maximum();
         qreal newMappedValue = maximum / 100 * newValue;
-        ui->internalRadiusBox->setValue(newMappedValue);
+        setInternalRadius(newMappedValue);
     });
+
+    connect(ui->externalRadiusBox,    SIGNAL(valueChanged(double)), SLOT(setInternalRadius(qreal)));
+    connect(ui->externalRadiusSlider, &QSlider::valueChanged,
+            [=](int newValue)
+    {
+        qreal maximum = ui->externalRadiusBox->maximum();
+        qreal newMappedValue = maximum / 100 * newValue;
+        setExternalRadius(newMappedValue);
+        //ui->externalRadiusBox->setValue(newMappedValue);
+    });
+
 }
 
 MainWindow::~MainWindow()
@@ -26,7 +37,15 @@ MainWindow::~MainWindow()
 void MainWindow::setInternalRadius(qreal newValue)
 {
     qDebug() << Q_FUNC_INFO << newValue;
-    ui->m_scene->setSceneParams(newValue);
+    ui->m_scene->setInternalRadius(newValue);
+
+    ui->m_scene->repaint();
+}
+
+void MainWindow::setExternalRadius(qreal newValue)
+{
+    qDebug() << Q_FUNC_INFO << newValue;
+    ui->m_scene->setExternalRadius(newValue);
 
     ui->m_scene->repaint();
 }

@@ -15,9 +15,11 @@ public:
     explicit SceneRenderer(QWidget *parent = 0);
     ~SceneRenderer();
 
-    void setSceneParams(qreal internalRadius);
+    void setSceneParams(qreal internalRadius, qreal externalRadius);
+    void setInternalRadius(qreal internalRadius);
+    void setExternalRadius(qreal externalRadius);
 
-    void getDefaults (qreal& internalRadius);
+    void getDefaults (qreal& internalRadius, qreal& externalRadius);
     void getMaxValues(qreal& internalRadius);
 
 protected:
@@ -25,6 +27,7 @@ protected:
 
 private:
     qreal m_internalRadius;
+    qreal m_externalRadius;
 };
 
 #endif // SCENERENDERER_H

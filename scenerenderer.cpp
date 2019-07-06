@@ -12,24 +12,37 @@ static const int POINTS_ON_CIRCLE    = 30;
 SceneRenderer::SceneRenderer(QWidget *parent) :
     QOpenGLWidget(parent)
 {   
-    getDefaults(m_internalRadius);
+    getDefaults(m_internalRadius, m_externalRadius);
 }
 
 SceneRenderer::~SceneRenderer()
 {
 }
 
-void SceneRenderer::setSceneParams(qreal internalRadius)
+void SceneRenderer::setSceneParams(qreal internalRadius, qreal externalRadius)
+{
+    m_internalRadius = internalRadius;
+    m_externalRadius = externalRadius;
+}
+
+void SceneRenderer::setInternalRadius(qreal internalRadius)
 {
     m_internalRadius = internalRadius;
 }
 
-void SceneRenderer::getDefaults(qreal &internalRadius)
+void SceneRenderer::setExternalRadius(qreal externalRadius)
+{
+    m_externalRadius = externalRadius;
+}
+
+void SceneRenderer::getDefaults(qreal &internalRadius, qreal &externalRadius)
 {
     QRect scene = geometry(); //event->rect();
 
     int minSide = qMin(scene.width(), scene.height());
     internalRadius = minSide / 2;
+
+    externalRadius = internalRadius - 10;
 }
 
 void SceneRenderer::getMaxValues(qreal &internalRadius)
@@ -49,22 +62,12 @@ void SceneRenderer::paintEvent(QPaintEvent *event)
 
     painter.fillRect(event->rect(), QColor(Qt::white));
     painter.setRenderHint(QPainter::Antialiasing);
-    //painter.setBrush(Qt::SolidPattern);
 
     QRect scene = geometry(); //event->rect();
 
-    int minSide = qMin(scene.width(), scene.height());
-    int radius = m_internalRadius; //minSide / 2;
+    int radius = m_internalRadius;
     int centerX = scene.width() / 2;
     int centerY = scene.height() / 2;
-    QPoint center(centerX, centerY);
-
-    qDebug() << "\n============";
-    qDebug() << "minSide = "       << minSide;
-    qDebug() << "center = "        << center;
-    qDebug() << "geometry() = "    << geometry();
-    qDebug() << "event->rect() = " << event->rect();
-
 
     QPen oldPen = painter.pen();
     oldPen.setColor(Qt::red);
@@ -92,7 +95,7 @@ void SceneRenderer::paintEvent(QPaintEvent *event)
                     .arg(x)
                     .arg(y);
 
-        painter.drawEllipse(QPointF(x, y), radius-10, radius-10);
+        painter.drawEllipse(QPointF(x, y), m_externalRadius, m_externalRadius);
     }
 
 //    painter.drawPoint(0, 0);

@@ -17,6 +17,7 @@ public:
 
 public slots:
     void setInternalRadius(qreal newValue);
+    void setExternalRadius(qreal newValue);
 
 private:
     Ui::MainWindow *ui;
